@@ -11,36 +11,29 @@ const { fileSizeFormatter } = require('../utils/fileSizeFormatter')
 
 
 
-exports.signup = async (req, res) =>{
+exports.signup = async (req, res) => {
     try {
-        // const userSignUp  = await User.findOne({email: req.body.email});
 
-        //     if(userSignUp){
-        //         res.status(404).json({
-        //             error: 'Email is already taken'
-        //         })
-        //     } else{
-                
-                const hashPassword = await bcrypt.hash(req.body.password, 10);
-                const newUser = new User({
-                    name: req.body.name,
-                    email: req.body.email,
-                    password: hashPassword,
-                    avatar: req.file.originalname
-                });
+        const hashPassword = await bcrypt.hash(req.body.password, 10);
+        const newUser = new User({
+            name: req.body.name,
+            email: req.body.email,
+            password: hashPassword,
+            avatar: req.file.originalname
+        });
 
-                // User.regis
-                await newUser.save();
-                res.status(200).json({
-                    newUser,
-                    message: 'signup successfully',
-                });
-            
+        // User.regis
+        await newUser.save();
+        res.status(200).json({
+            newUser,
+            message: 'signup successfully',
+        });
 
-    } catch(error) {
+
+    } catch (error) {
         res.status(500).json({
             message: 'signup error find!!!',
-            err:error.message
+            err: error.message
         });
     }
 }
@@ -48,7 +41,7 @@ exports.signup = async (req, res) =>{
 
 exports.login = async (req, res) => {
     try {
-        const user = await UserAuth.find({ email: req.body.email })
+        const user = await User.find({ email: req.body.email })
 
         //user found check
 
@@ -62,7 +55,7 @@ exports.login = async (req, res) => {
                     {
                         email: user[0].email,
                         userId: user[0]._id
-                    }
+                    },process.env.JWT_SECRET
                 );
                 res.status(200).json({
                     token: token,
@@ -72,7 +65,7 @@ exports.login = async (req, res) => {
             }
             else {
                 res.status(401).json({
-                    error: 'authentication failed',
+                    error: 'password invalid',
                 });
             }
         }
@@ -95,8 +88,7 @@ exports.login = async (req, res) => {
 exports.getAllUser = async (req, res) => {
     try {
 
-        const allUser = await UserAuth.find().sort(-createdAt)
-
+        const allUser = await User.find({})
         res.status(400).json({
             message: 'All user find successfully',
             result: allUser
@@ -105,9 +97,8 @@ exports.getAllUser = async (req, res) => {
     }
     catch (err) {
         res.status(500).json({
-
             message: 'User not found',
-            error: err
+            error: err.message
         })
     }
 }
@@ -116,7 +107,7 @@ exports.getAllUser = async (req, res) => {
 
 exports.specificUser = async (req, res) => {
     try {
-        const specificUser = await UserAuth.findById({ _id: req.params.id });
+        const specificUser = await User.findById({ _id: req.params.id });
         res.status(400).json({
             message: 'user find successfully',
             result: specificUser
@@ -133,11 +124,11 @@ exports.specificUser = async (req, res) => {
 
 exports.updateUserInfo = async (req, res) => {
     try {
-        const updateUserInfo = await UserAuth.findByIdAndUpdate(req.params.id, {
+        const updateUserInfo = await User.findByIdAndUpdate(req.params.id, {
             name: req.body.name,
             email: req.body.email,
             password: hashedPassword,
-            avatar: req.file[0].filename
+            avatar: req.file.originalname
         }, { new: true })
         res.status(200).json({
             message: 'Information updated successfully',
@@ -147,7 +138,7 @@ exports.updateUserInfo = async (req, res) => {
     catch (err) {
         res.status(500).json({
             message: 'Something went wrong',
-            error: err
+            error: err.message
         })
     }
 }
@@ -156,7 +147,7 @@ exports.updateUserInfo = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
-        const deleteUser = await UserAuth.findByIdAndDelete({ _id: req.params.id })
+        const deleteUser = await User.findByIdAndDelete({ _id: req.params.id })
 
         res.status(200).json({
             message: 'User deleted successfully'
@@ -165,7 +156,7 @@ exports.deleteUser = async (req, res) => {
     catch (err) {
         res.status(500).json({
             message: 'Something went wrong',
-            error: err
+            error: err.message
         })
     }
 }

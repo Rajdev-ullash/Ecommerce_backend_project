@@ -21,12 +21,11 @@ const {signup, login, getAllUser, specificUser, updateUserInfo, deleteUser, sing
 
 
 
-
 //route
 
 router.post('/signup', upload.single('file'),addUserValidator,addUserValidationHandler, signup)
-router.post(`/login`, login)
-router.get(`/getAllUser`, checkLogin, getAllUser)
+router.post('/login', login)
+router.get('/getAllUser',checkLogin, getAllUser)
 router.get(`/user/:id`, checkLogin, specificUser)
 router.put(`/updateInfo/:id`, checkLogin, updateUserInfo)
 router.delete(`/deleteUser`, checkLogin, deleteUser)

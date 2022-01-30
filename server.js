@@ -2,7 +2,9 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+// const createError = require('http-errors')
 
+const path = require('path');
 
 const database = require('./config/db');
 const { urlencoded } = require('body-parser');
@@ -18,6 +20,21 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(morgan('dev'))
+// app.use(createError());
+
+app.use('/avatars', express.static(path.join(__dirname,'avatars')));
+
+let api = process.env.VERSION;
+
+// import routers
+
+const user = require('./routers/userAuthRouter')
+
+
+//call route
+
+app.use('/user', user)
+
 
 
 //db connection

@@ -1,18 +1,14 @@
 const mongoose = require('mongoose')
-
-
+mongoose.Promise = global.Promise;
 
 const userAuthSchema = new mongoose.Schema({
     name:{
         type:'String',
-        required:true,
-        trim:true,
+        required:true
     },
     email:{
         type:'String',
-        required:true,
-        lowercase:true,
-        trim:true,
+        required:true
     },
     password:{
         type:'String',
@@ -23,4 +19,4 @@ const userAuthSchema = new mongoose.Schema({
     }
 },{timestamps:true})
 
-module.exports = mongoose.model('UserAuth', userAuthSchema);
+module.exports =mongoose.models.User || mongoose.model('User', userAuthSchema);

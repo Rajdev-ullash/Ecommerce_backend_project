@@ -26,11 +26,11 @@ const {signup, login, getAllUser, specificUser, updateUserInfo, deleteUser, sing
 router.post('/signup', upload.single('file'),addUserValidator,addUserValidationHandler, signup)
 router.post('/login', login)
 router.get('/getAllUser',checkLogin, getAllUser)
-router.get(`/user/:id`, checkLogin, specificUser)
-router.put(`/updateInfo/:id`, checkLogin, updateUserInfo)
-router.delete(`/deleteUser`, checkLogin, deleteUser)
+router.get('/user/:id', checkLogin, specificUser)
+router.put('/updateInfo/:id',upload.single('file'), checkLogin, updateUserInfo)
+router.delete('/deleteUser/:id', checkLogin, deleteUser)
 
-router.post('/singleFileUpload', upload.single('file'), singleFileUpload)
+// router.post('/singleFileUpload', upload.single('file'), singleFileUpload)
 
 
 

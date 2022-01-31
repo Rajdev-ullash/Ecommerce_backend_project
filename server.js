@@ -30,10 +30,13 @@ let api = process.env.VERSION;
 
 const user = require('./routers/userAuthRouter')
 
+const product = require('./routers/productRouter')
+
 
 //call route
 
 app.use('/user', user)
+app.use('/product', product)
 
 
 

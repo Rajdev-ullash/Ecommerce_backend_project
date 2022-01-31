@@ -47,10 +47,6 @@ const addUserValidationHandler = function(req, res, next) {
                     console.log(err)
                 }
             }
-                // path.join(`../avatars/${filename}`),
-                // (err)=>{
-                //     if (err) console.log(err);
-                // }
             );
         }
 
